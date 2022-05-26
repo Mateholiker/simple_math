@@ -41,6 +41,12 @@ impl From<Vec2> for Pos2 {
     }
 }
 
+impl From<Pos2> for Vec2 {
+    fn from(pos: Pos2) -> Self {
+        Vec2 { x: pos.x, y: pos.y }
+    }
+}
+
 impl Vec2 {
     pub const fn new(x: f32, y: f32) -> Vec2 {
         Vec2 { x, y }
