@@ -1,6 +1,6 @@
 use std::ops::{Add, Div, Mul, Sub};
 
-use eframe::egui::Pos2;
+use eframe::egui::{Pos2, Vec2 as GuiVec};
 
 #[derive(Clone, Copy, Default, Debug)]
 pub struct Vec2 {
@@ -44,6 +44,12 @@ impl From<Vec2> for Pos2 {
 impl From<Pos2> for Vec2 {
     fn from(pos: Pos2) -> Self {
         Vec2 { x: pos.x, y: pos.y }
+    }
+}
+
+impl From<GuiVec> for Vec2 {
+    fn from(vec: GuiVec) -> Self {
+        Vec2 { x: vec.x, y: vec.y }
     }
 }
 
