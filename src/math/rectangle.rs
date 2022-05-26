@@ -35,6 +35,22 @@ impl Rectangle {
         self.max
     }
 
+    pub fn top(&self) -> f32 {
+        self.max.y()
+    }
+
+    pub fn bottom(&self) -> f32 {
+        self.min.y()
+    }
+
+    pub fn right(&self) -> f32 {
+        self.max.x()
+    }
+
+    pub fn left(&self) -> f32 {
+        self.min.x()
+    }
+
     pub fn width(&self) -> f32 {
         self.max().x() - self.min().x()
     }
