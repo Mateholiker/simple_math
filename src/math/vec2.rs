@@ -53,6 +53,15 @@ impl From<GuiVec> for Vec2 {
     }
 }
 
+impl From<Vec2> for GuiVec {
+    fn from(vec: Vec2) -> Self {
+        GuiVec {
+            x: vec.x(),
+            y: vec.y(),
+        }
+    }
+}
+
 impl Vec2 {
     pub const fn new(x: f32, y: f32) -> Vec2 {
         Vec2 { x, y }
