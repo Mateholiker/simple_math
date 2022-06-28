@@ -65,6 +65,12 @@ impl Rectangle {
         let max = self.max - Vec2::new(amount, amount);
         Rectangle { min, max }
     }
+    
+    pub fn shrink2(self, x_amount: f32, y_amount: f32) -> Rectangle {
+        let min = self.min + Vec2::new(x_amount, y_amount);
+        let max = self.max - Vec2::new(x_amount, y_amount);
+        Rectangle { min, max }
+    }
 
     pub fn extend_with_vec2(&mut self, vec: Vec2) {
         let min_x = self.min.x().min(vec.x());
