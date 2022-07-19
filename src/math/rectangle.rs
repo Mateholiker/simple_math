@@ -1,8 +1,9 @@
 use eframe::egui::Rect;
+use serde::{Deserialize, Serialize};
 
 use super::Vec2;
 
-#[derive(Clone, Copy, Default, Debug)]
+#[derive(Clone, Copy, Default, Debug, Deserialize, Serialize)]
 pub struct Rectangle {
     min: Vec2,
     max: Vec2,
@@ -65,7 +66,7 @@ impl Rectangle {
         let max = self.max - Vec2::new(amount, amount);
         Rectangle { min, max }
     }
-    
+
     pub fn shrink2(self, x_amount: f32, y_amount: f32) -> Rectangle {
         let min = self.min + Vec2::new(x_amount, y_amount);
         let max = self.max - Vec2::new(x_amount, y_amount);

@@ -1,8 +1,9 @@
 use std::ops::{Add, Div, Mul, Sub};
 
 use eframe::egui::{Pos2, Vec2 as GuiVec};
+use serde::{Deserialize, Serialize};
 
-#[derive(Clone, Copy, Default, Debug)]
+#[derive(Clone, Copy, Default, Debug, Deserialize, Serialize)]
 pub struct Vec2 {
     x: f32,
     y: f32,
