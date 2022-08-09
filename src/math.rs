@@ -1,5 +1,6 @@
 pub mod line2;
 pub mod rectangle;
+pub mod trajectory;
 pub mod vec2;
 
 use vec2::Vec2;
