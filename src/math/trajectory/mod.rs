@@ -79,11 +79,7 @@ pub trait Trajectory: Sized {
     }
 
     fn euclidean_lenght(&self) -> f32 {
-        let mut lenght = 0.0;
-        for line_segment in self.iter_line_segments() {
-            lenght += line_segment.start().euclidean_distance(line_segment.end());
-        }
-        lenght
+        self.track_length(0, self.number_of_nodes() - 1)
     }
 
     fn intersections(&self, line: Line2) -> Vec<Vec2> {
@@ -94,5 +90,15 @@ pub trait Trajectory: Sized {
             }
         }
         intersections
+    }
+
+    ///the length of the partial trajectory form start to end
+    fn track_length(&self, start: usize, end: usize) -> f32 {
+        assert!(start <= end);
+        let mut lenght = 0.0;
+        for line_segment in self.iter_line_segments().skip(start).take(end - start) {
+            lenght += line_segment.lenght();
+        }
+        lenght
     }
 }
