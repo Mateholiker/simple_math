@@ -1,4 +1,4 @@
-use std::ops::{Add, Div, Mul, Sub};
+use std::ops::{Add, AddAssign, Div, Mul, Sub};
 
 use eframe::egui::{Pos2, Vec2 as GuiVec};
 use serde::{Deserialize, Serialize};
@@ -35,6 +35,15 @@ impl From<Vec2> for (f32, f32) {
 
 impl From<Vec2> for Pos2 {
     fn from(vec: Vec2) -> Self {
+        Pos2 {
+            x: vec.x(),
+            y: vec.y(),
+        }
+    }
+}
+
+impl From<&Vec2> for Pos2 {
+    fn from(vec: &Vec2) -> Self {
         Pos2 {
             x: vec.x(),
             y: vec.y(),
@@ -178,5 +187,11 @@ impl Sub for Vec2 {
     type Output = Vec2;
     fn sub(self, rhs: Vec2) -> Vec2 {
         self + (-1 * rhs)
+    }
+}
+
+impl AddAssign for Vec2 {
+    fn add_assign(&mut self, rhs: Self) {
+        *self = *self + rhs;
     }
 }
