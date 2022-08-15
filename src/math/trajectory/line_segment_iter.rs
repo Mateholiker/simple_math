@@ -20,6 +20,10 @@ impl<'n, N: Node> LineSegment<'n, N> {
     pub fn end(&self) -> &N {
         self.end
     }
+
+    pub fn lenght(&self) -> f32 {
+        self.start().euclidean_distance(self.end())
+    }
 }
 
 impl<'n, N: Node> From<LineSegment<'n, N>> for Line2 {
