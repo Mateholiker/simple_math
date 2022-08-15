@@ -54,7 +54,7 @@ pub trait Trajectory: Sized {
         let pos = pos_converter(pos);
         match self.number_of_nodes() {
             0 => Vec2::new(NAN, NAN),
-            1 => self.nodes()[0].pos(),
+            1 => pos_converter(self.nodes()[0].pos()),
             _ => {
                 let mut min_distance = INFINITY;
                 let mut closest_point = self.nodes()[0].pos(); //dummy value
