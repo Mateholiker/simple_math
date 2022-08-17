@@ -1,6 +1,6 @@
 use std::f32::{INFINITY, NAN};
 
-use crate::{get_closet_point_on_line_segment, Line2, Vec2};
+use crate::{get_closest_point_on_line_segment_with_portion, Line2, Vec2};
 
 pub use self::{
     line_segment_iter::LineSegmentIter, node::Node, step_runner::StepRunner,
@@ -51,29 +51,52 @@ pub trait Trajectory: Sized {
     /// returns the location vector to this closet point
     /// note: the returnet location vector is still in the new coordinate system
     fn closest_point_to_pos(&self, pos: Vec2, pos_converter: impl Fn(Vec2) -> Vec2) -> Vec2 {
+        self.closest_point_to_pos_with_portion_and_index(pos, pos_converter)
+            .map(|x| x.0)
+            .unwrap_or(Vec2::new(NAN, NAN))
+    }
+
+    /// calculates the clostet point on the trajectory to pos in the new coordinate system
+    /// returns the location vector to this closet point
+    /// note: the returnet location vector is still in the new coordinate system
+    /// returns the (coordinate, the line segment index, the portion on the line segment in [0.0, 1.0)
+    /// retruns None if the Trajectory is empty
+    fn closest_point_to_pos_with_portion_and_index(
+        &self,
+        pos: Vec2,
+        pos_converter: impl Fn(Vec2) -> Vec2,
+    ) -> Option<(Vec2, usize, f32)> {
         let pos = pos_converter(pos);
         match self.number_of_nodes() {
-            0 => Vec2::new(NAN, NAN),
-            1 => pos_converter(self.nodes()[0].pos()),
+            0 => None,
+            1 => Some((pos_converter(self.nodes()[0].pos()), 0, 0.0)),
             _ => {
                 let mut min_distance = INFINITY;
                 let mut closest_point = self.nodes()[0].pos(); //dummy value
-                for line_segment in self.iter_line_segments() {
+                let mut closest_point_t = 0.0; //dummy value
+                let mut closest_point_i = 0; //dummy value
+                for (i, line_segment) in self.iter_line_segments().enumerate() {
                     let line_start = pos_converter(line_segment.start().pos());
                     let line_end = pos_converter(line_segment.end().pos());
 
-                    let new_closest_point =
-                        get_closet_point_on_line_segment(line_start, line_end, pos);
+                    let (new_closest_point, t) =
+                        get_closest_point_on_line_segment_with_portion(line_start, line_end, pos);
 
                     let distance = pos.euclidean_distance(new_closest_point);
 
                     if distance < min_distance {
                         min_distance = distance;
                         closest_point = new_closest_point;
+                        closest_point_t = t;
+                        closest_point_i = i;
                     }
                 }
 
-                closest_point
+                if closest_point_t < 1.0 {
+                    Some((closest_point, closest_point_i, closest_point_t))
+                } else {
+                    Some((closest_point, closest_point_i + 1, 0.0))
+                }
             }
         }
     }
