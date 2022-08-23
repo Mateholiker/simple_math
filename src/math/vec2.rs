@@ -20,10 +20,7 @@ where
 
 impl<M: Into<f32>, N: Into<f32>> From<(N, M)> for Vec2 {
     fn from((x, y): (N, M)) -> Vec2 {
-        Vec2 {
-            x: x.into(),
-            y: y.into(),
-        }
+        Vec2::new(x.into(), y.into())
     }
 }
 
@@ -53,13 +50,13 @@ impl From<&Vec2> for Pos2 {
 
 impl From<Pos2> for Vec2 {
     fn from(pos: Pos2) -> Self {
-        Vec2 { x: pos.x, y: pos.y }
+        Vec2::new(pos.x, pos.y)
     }
 }
 
 impl From<GuiVec> for Vec2 {
     fn from(vec: GuiVec) -> Self {
-        Vec2 { x: vec.x, y: vec.y }
+        Vec2::new(vec.x, vec.y)
     }
 }
 
@@ -75,6 +72,10 @@ impl From<Vec2> for GuiVec {
 impl Vec2 {
     pub const fn new(x: f32, y: f32) -> Vec2 {
         Vec2 { x, y }
+    }
+
+    pub fn is_finite(self) -> bool {
+        self.x.is_finite() && self.y.is_finite()
     }
 
     pub fn x(self) -> f32 {
@@ -102,11 +103,7 @@ impl Vec2 {
     }
 
     pub fn get_orthogonally_vec(&self) -> Vec2 {
-        Vec2 {
-            x: self.y(),
-            y: -self.x(),
-        }
-        .normalise()
+        Vec2::new(self.y(), -self.x()).normalise()
     }
 }
 
@@ -120,50 +117,35 @@ impl Mul for Vec2 {
 impl Mul<f32> for Vec2 {
     type Output = Vec2;
     fn mul(self, rhs: f32) -> Vec2 {
-        Vec2 {
-            x: self.x * rhs,
-            y: self.y * rhs,
-        }
+        Vec2::new(self.x * rhs, self.y * rhs)
     }
 }
 
 impl Mul<Vec2> for f32 {
     type Output = Vec2;
     fn mul(self, rhs: Vec2) -> Vec2 {
-        Vec2 {
-            x: rhs.x * self,
-            y: rhs.y * self,
-        }
+        Vec2::new(rhs.x * self, rhs.y * self)
     }
 }
 
 impl Mul<i32> for Vec2 {
     type Output = Vec2;
     fn mul(self, rhs: i32) -> Vec2 {
-        Vec2 {
-            x: self.x * rhs as f32,
-            y: self.y * rhs as f32,
-        }
+        Vec2::new(self.x * rhs as f32, self.y * rhs as f32)
     }
 }
 
 impl Mul<Vec2> for i32 {
     type Output = Vec2;
     fn mul(self, rhs: Vec2) -> Vec2 {
-        Vec2 {
-            x: rhs.x * self as f32,
-            y: rhs.y * self as f32,
-        }
+        Vec2::new(rhs.x * self as f32, rhs.y * self as f32)
     }
 }
 
 impl Div<f32> for Vec2 {
     type Output = Vec2;
     fn div(self, rhs: f32) -> Vec2 {
-        Vec2 {
-            x: self.x() / rhs,
-            y: self.y() / rhs,
-        }
+        Vec2::new(self.x() / rhs, self.y() / rhs)
     }
 }
 
@@ -176,10 +158,7 @@ impl PartialEq for Vec2 {
 impl Add for Vec2 {
     type Output = Vec2;
     fn add(self, rhs: Vec2) -> Vec2 {
-        Vec2 {
-            x: self.x + rhs.x,
-            y: self.y + rhs.y,
-        }
+        Vec2::new(self.x + rhs.x, self.y + rhs.y)
     }
 }
 

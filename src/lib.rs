@@ -1,3 +1,5 @@
+#![feature(const_float_classify)]
+
 mod math;
 pub use math::{
     get_closest_point_on_line_segment, get_closest_point_on_line_segment_with_portion,
