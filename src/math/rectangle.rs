@@ -1,6 +1,8 @@
 use eframe::egui::Rect;
 use serde::{Deserialize, Serialize};
 
+use crate::max;
+
 use super::Vec2;
 
 #[derive(Clone, Copy, Default, Debug, Deserialize, Serialize)]
@@ -28,12 +30,23 @@ impl Rectangle {
         Rectangle { min, max }
     }
 
+    pub fn from_center_and_size(center: Vec2, size: Vec2) -> Rectangle {
+        let corner_a = center + size / 2.0;
+        let corner_b = center - size / 2.0;
+
+        Rectangle::new(corner_a, corner_b)
+    }
+
     pub fn min(&self) -> Vec2 {
         self.min
     }
 
     pub fn max(&self) -> Vec2 {
         self.max
+    }
+
+    pub fn center(&self) -> Vec2 {
+        (self.min + self.max) / 2.0
     }
 
     pub fn top(&self) -> f32 {
@@ -94,6 +107,25 @@ impl Rectangle {
             && self.max.x() >= pos.x()
             && self.min.y() <= pos.y()
             && self.max.y() >= pos.y()
+    }
+
+    pub fn distance_vector(self, other: Rectangle) -> Vec2 {
+        let x = max!(
+            other.bottom() - self.top(),
+            self.bottom() - other.top(),
+            0.0
+        );
+        let y = max!(
+            other.left() - self.right(),
+            self.left() - other.right(),
+            0.0
+        );
+
+        Vec2::new(x, y)
+    }
+
+    pub fn distance(self, other: Rectangle) -> f32 {
+        self.distance_vector(other).euclidean_lenght()
     }
 }
 
