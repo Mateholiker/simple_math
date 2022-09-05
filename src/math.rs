@@ -48,3 +48,37 @@ pub fn point_line_segment_distance_squared(line_start: Vec2, line_end: Vec2, poi
 
     point.euclidean_distance_squared(projection)
 }
+
+#[macro_export]
+macro_rules! max {
+    ($x: expr) => ($x);
+    ($x: expr, $($z: expr),+) => {{
+        let y = max!($($z),*);
+        use std::cmp::Ordering;
+        match $x.partial_cmp(&y) {
+            Some(Ordering::Less) => y,
+            Some(Ordering::Equal) => $x,
+            Some(Ordering::Greater) => $x,
+            None => {
+                panic!("Could not compare {} and {}", $x, y)
+            }
+        }
+    }}
+}
+
+#[macro_export]
+macro_rules! min {
+    ($x: expr) => ($x);
+    ($x: expr, $($z: expr),+) => {{
+        let y = min!($($z),*);
+        use std::cmp::Ordering;
+        match $x.partial_cmp(&y) {
+            Some(Ordering::Less) => $x,
+            Some(Ordering::Equal) => $x,
+            Some(Ordering::Greater) => y,
+            None => {
+                panic!("Could not compare {} and {}", $x, y)
+            }
+        }
+    }}
+}
