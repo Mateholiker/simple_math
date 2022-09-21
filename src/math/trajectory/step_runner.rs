@@ -2,7 +2,7 @@ use crate::{math::trajectory::node::Node, Vec2};
 
 use super::Trajectory;
 
-const EPSILON: f32 = 0.0001;
+const EPSILON: f32 = 0.001;
 
 #[derive(Clone, Copy, Debug)]
 pub struct Step {

@@ -69,9 +69,9 @@ impl Line2 {
             //intersection pos for other
             let p2 = (ds.y() * d1.x() - ds.x() * d1.y()) / determinante;
 
-            if ((s2 + d2 * p2) - (s1 + d1 * p1)).euclidean_lenght() >= 0.1 {
+            if ((s2 + d2 * p2) - (s1 + d1 * p1)).euclidean_lenght() >= 1.0 {
                 dbg!(((s2 + d2 * p2) - (s1 + d1 * p1)).euclidean_lenght());
-                assert!(((s2 + d2 * p2) - (s1 + d1 * p1)).euclidean_lenght() < 0.1);
+                assert!(((s2 + d2 * p2) - (s1 + d1 * p1)).euclidean_lenght() < 1.0);
             }
 
             use LineType::{Line, LineSegment, Ray};
